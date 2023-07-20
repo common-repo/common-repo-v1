@@ -1,0 +1,2 @@
+upstream:
+  - url: https://github.com/shakefu/humbledb
