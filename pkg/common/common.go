@@ -13,7 +13,7 @@ var defaults struct {
 }
 
 func init() {
-	defaults.ConfigFileGlob = ".commonrepo.{yaml,yml}"
+	defaults.ConfigFileGlob = ".commonrepo.{yaml.yaml}"
 }
 
 // ConfigFileGlob returns the glob pattern for locating a repo's config

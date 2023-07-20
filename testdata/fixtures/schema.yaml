@@ -4,7 +4,7 @@
 # Source repositories define which of their files should be imported into the
 # child repository.
 #
-# This should be defined in the `.commonrepo.yml` file.
+# This should be defined in the `.commonrepo.yaml` file.
 #
 # The bare minimum configuration is a single `include: ["**/*"]` entry.
 

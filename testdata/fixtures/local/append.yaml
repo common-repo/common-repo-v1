@@ -5,4 +5,4 @@ upstream:
     exclude:
     - action.*
     rename:
-    - ".commonrepo.yml": ".commonrepo.empty.yml"
+    - ".commonrepo.yaml": ".commonrepo.empty.yaml"

@@ -45,7 +45,7 @@ func TestCommon(t *testing.T) {
 		g.Describe("ConfigFileGlob", func() {
 			g.It("returns the glob for config", func() {
 				glob := ConfigFileGlob()
-				Expect(glob).To(Equal(".commonrepo.{yaml,yml}"))
+				Expect(glob).To(Equal(".commonrepo.{yaml.yaml}"))
 			})
 
 			g.It("allows for env override", func() {

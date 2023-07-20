@@ -20,7 +20,7 @@ func TestFiles(t *testing.T) {
 			repo := LocalRepo()
 			files, err := List(repo.FS())
 			Expect(err).ToNot(HaveOccurred())
-			Expect(files).To(ContainElement(".commonrepo.yml"))
+			Expect(files).To(ContainElement(".commonrepo.yaml"))
 		})
 	})
 }

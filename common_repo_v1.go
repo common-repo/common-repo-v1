@@ -78,7 +78,7 @@ func NewFromRepo(from string, repo *repos.Repo) (cr *CommonRepo, err error) {
 }
 
 // NewFromRename returns a new CommonRepo using the given Repo and renames which
-// might modify the base path for the .commonrepo.yml
+// might modify the base path for the .commonrepo.yaml
 func NewFromRename(repo *repos.Repo, renames []config.Rename) (cr *CommonRepo, err error) {
 	// Apply the renames
 	repo.ApplyRenames(renames)

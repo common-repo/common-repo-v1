@@ -61,28 +61,28 @@ func TestRepo(t *testing.T) {
 				})
 
 				g.It("globs subpaths", func() {
-					files, err := repo.Glob("*/*/schema.yml")
+					files, err := repo.Glob("*/*/schema.yaml")
 					Expect(err).ShouldNot(HaveOccurred())
-					Expect(files).To(Equal([]string{"testdata/fixtures/schema.yml"}))
+					Expect(files).To(Equal([]string{"testdata/fixtures/schema.yaml"}))
 				})
 
 				g.It("globs more subpaths", func() {
-					files, err := repo.Glob("*/*/schema.yml")
+					files, err := repo.Glob("*/*/schema.yaml")
 					Expect(err).ShouldNot(HaveOccurred())
-					Expect(files).To(Equal([]string{"testdata/fixtures/schema.yml"}))
+					Expect(files).To(Equal([]string{"testdata/fixtures/schema.yaml"}))
 				})
 
 				g.It("globs all the subpaths to a filename", func() {
-					files, err := repo.Glob("**/schema.yml")
+					files, err := repo.Glob("**/schema.yaml")
 					// files, err := repo.Glob("*/*/*/*")
 					Expect(err).ShouldNot(HaveOccurred())
-					Expect(files).To(Equal([]string{"testdata/fixtures/schema.yml"}))
+					Expect(files).To(Equal([]string{"testdata/fixtures/schema.yaml"}))
 				})
 
 				g.It("globs all the subpaths dir matching to file", func() {
-					files, err := repo.Glob("*/*/*/deep.yml")
+					files, err := repo.Glob("*/*/*/deep.yaml")
 					Expect(err).ShouldNot(HaveOccurred())
-					Expect(files).To(Equal([]string{"testdata/fixtures/local/deep.yml"}))
+					Expect(files).To(Equal([]string{"testdata/fixtures/local/deep.yaml"}))
 				})
 			})
 
@@ -108,7 +108,7 @@ func TestRepo(t *testing.T) {
 					}
 					if cfg, err = config.ParseConfig(InlineYaml(`
 						include:
-						  - testdata/fixtures/local/*d*.yml`)); err != nil {
+						  - testdata/fixtures/local/*d*.yaml`)); err != nil {
 						g.FailNow()
 					}
 				})
@@ -117,8 +117,8 @@ func TestRepo(t *testing.T) {
 					Expect(err).ToNot(HaveOccurred())
 					repo.ApplyIncludes(cfg.Include)
 					Expect(SortTargetNames(repo.Targets())).To(Equal([]string{
-						"testdata/fixtures/local/append.yml",
-						"testdata/fixtures/local/deep.yml",
+						"testdata/fixtures/local/append.yaml",
+						"testdata/fixtures/local/deep.yaml",
 					}))
 				})
 
@@ -138,17 +138,17 @@ func TestRepo(t *testing.T) {
 					}
 					if cfg, err = config.ParseConfig(InlineYaml(`
 						exclude:
-						  - testdata/fixtures/local/deep.yml`)); err != nil {
+						  - testdata/fixtures/local/deep.yaml`)); err != nil {
 						g.FailNow()
 					}
-					_, err = repo.ApplyIncludes([]string{"testdata/fixtures/local/*d*.yml"})
+					_, err = repo.ApplyIncludes([]string{"testdata/fixtures/local/*d*.yaml"})
 				})
 
 				g.It("works", func() {
 					found, err := repo.ApplyExcludes(cfg.Exclude)
 					Expect(err).ToNot(HaveOccurred())
 					Expect(SortTargetNames(found)).To(Equal([]string{
-						"testdata/fixtures/local/append.yml",
+						"testdata/fixtures/local/append.yaml",
 					}))
 				})
 
@@ -156,14 +156,14 @@ func TestRepo(t *testing.T) {
 					found, err := repo.ApplyExcludes([]string{})
 					Expect(err).ToNot(HaveOccurred())
 					Expect(SortTargetNames(found)).To(Equal([]string{
-						"testdata/fixtures/local/append.yml",
+						"testdata/fixtures/local/append.yaml",
 					}))
 				})
 			})
 
 			g.Describe("ApplyTemplates", func() {
 				var cfg *config.Config
-				var target = "testdata/fixtures/local/deep.yml"
+				var target = "testdata/fixtures/local/deep.yaml"
 
 				g.Before(func() {
 					if repo, err = GetLocalRepo(); err != nil {
@@ -171,7 +171,7 @@ func TestRepo(t *testing.T) {
 					}
 					if cfg, err = config.ParseConfig(InlineYaml(`
 						template:
-						  - testdata/fixtures/local/deep.yml
+						  - testdata/fixtures/local/deep.yaml
 						template-vars:
 						  templated: true`)); err != nil {
 						g.FailNow()
@@ -243,13 +243,13 @@ func TestRepo(t *testing.T) {
 				})
 
 				g.It("lets you hard rename a commonrepo file", func() {
-					data, err := os.ReadFile("../../testdata/fixtures/deep_source.yml")
+					data, err := os.ReadFile("../../testdata/fixtures/deep_source.yaml")
 					Expect(err).ShouldNot(HaveOccurred())
 					conf, err := config.ParseConfig(data)
 					Expect(err).ShouldNot(HaveOccurred())
 					renamed := repo.ApplyRenames(conf.Upstream[0].Rename)
 					// Expect(renamed).To(Equal(map[string]string{}))
-					Expect(renamed[".commonrepo.yml"].Name).To(Equal("testdata/fixtures/single_source.yml"))
+					Expect(renamed[".commonrepo.yaml"].Name).To(Equal("testdata/fixtures/single_source.yaml"))
 				})
 			})
 
@@ -264,10 +264,10 @@ func TestRepo(t *testing.T) {
 					Expect(matches["renamed-README.md"].Name).To(Equal("README.md"))
 				})
 
-				g.It("finds the commonrepo.yml", func() {
+				g.It("finds the commonrepo.yaml", func() {
 					matches, err := repo.GlobTargets(common.ConfigFileGlob())
 					Expect(err).ShouldNot(HaveOccurred())
-					Expect(matches[".commonrepo.yml"].Name).To(Equal(".commonrepo.yml"))
+					Expect(matches[".commonrepo.yaml"].Name).To(Equal(".commonrepo.yaml"))
 				})
 			})
 		})

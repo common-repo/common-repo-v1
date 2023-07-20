@@ -18,11 +18,11 @@ func TestCommonRepo(t *testing.T) {
 	g.Describe("commonrepo", func() {
 		g.Describe("Upstreams", func() {
 			g.It("returns the upstreams", func() {
-				cr, _ := NewFrom("testdata/fixtures/local/single.yml", ".")
+				cr, _ := NewFrom("testdata/fixtures/local/single.yaml", ".")
 				ups, err := cr.Upstreams()
 				Expect(err).ToNot(HaveOccurred())
 				Expect(len(ups)).To(Equal(2))
-				Expect(ups[1].String()).To(HavePrefix("./testdata/fixtures/local/single.yml@"))
+				Expect(ups[1].String()).To(HavePrefix("./testdata/fixtures/local/single.yaml@"))
 				Expect(ups[0].String()).To(HavePrefix("./@"))
 			})
 		})

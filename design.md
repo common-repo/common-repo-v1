@@ -1,4 +1,4 @@
-- Look for `./.commonreporc` # .reporc or .commonrepo.yml ?
+- Look for `./.commonreporc` # .reporc or .commonrepo.yaml ?
     - Doesn't exist
         - Try to find repo root
         - Can't find one, error out

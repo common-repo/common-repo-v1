@@ -17,7 +17,7 @@ func TestRepoInternal(t *testing.T) {
 			repo := localRepo()
 			Expect(repo.files).To(ContainElement("go.mod"))
 			Expect(repo.files).To(ContainElement("go.sum"))
-			Expect(repo.files).To(ContainElement(".commonrepo.yml"))
+			Expect(repo.files).To(ContainElement(".commonrepo.yaml"))
 			Expect(repo.files).To(ContainElement("pkg/repos/repos.go"))
 		})
 
@@ -26,21 +26,21 @@ func TestRepoInternal(t *testing.T) {
 				repo := localRepo()
 				path, err := repo.findConfig()
 				Expect(err).ShouldNot(HaveOccurred())
-				Expect(path).To(Equal(".commonrepo.yml"))
+				Expect(path).To(Equal(".commonrepo.yaml"))
 			})
 
 			g.It("lets you search a different path", func() {
 				repo := localRepo()
-				path, err := repo.findConfig("**/fixtures/.commonrepo.{yml,yaml}")
+				path, err := repo.findConfig("**/fixtures/.commonrepo..yaml,yaml}")
 				Expect(err).ShouldNot(HaveOccurred())
 				Expect(path).To(Equal("testdata/fixtures/.commonrepo.yaml"))
 			})
 
 			g.It("sorts by shortest match", func() {
 				repo := localRepo()
-				path, err := repo.findConfig("**commonrepo.{yml,yaml}")
+				path, err := repo.findConfig("**commonrepo..yaml,yaml}")
 				Expect(err).ShouldNot(HaveOccurred())
-				Expect(path).To(Equal(".commonrepo.yml"))
+				Expect(path).To(Equal(".commonrepo.yaml"))
 			})
 		})
 
@@ -55,7 +55,7 @@ func TestRepoInternal(t *testing.T) {
 
 			g.It("loads alternate paths", func() {
 				repo := localRepo()
-				path, err := repo.readConfig("**/fixtures/.commonrepo.{yml,yaml}")
+				path, err := repo.readConfig("**/fixtures/.commonrepo..yaml,yaml}")
 				Expect(err).ShouldNot(HaveOccurred())
 				Expect(path).To(HavePrefix("include:"))
 			})
@@ -74,7 +74,7 @@ func TestRepoInternal(t *testing.T) {
 
 			g.It("loads alternate paths", func() {
 				repo := localRepo()
-				config, err := repo.LoadConfig("**/fixtures/.commonrepo.{yml,yaml}")
+				config, err := repo.LoadConfig("**/fixtures/.commonrepo..yaml,yaml}")
 				Expect(err).ShouldNot(HaveOccurred())
 				Expect(config).ShouldNot(BeNil())
 				Expect(config.Include).To(HaveLen(1))

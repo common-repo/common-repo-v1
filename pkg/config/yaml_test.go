@@ -21,7 +21,7 @@ func TestYamlConfig(t *testing.T) {
 			g.It("holds the raw yaml", func() {
 				data := InlineYaml(`
 				include:
-				- "testdata/fixtures/.commonrepo.yml"`)
+				- "testdata/fixtures/.commonrepo.yaml"`)
 				config := &config.YamlConfig{}
 				err := config.Unmarshal(data)
 				Expect(err).ToNot(HaveOccurred())

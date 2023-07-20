@@ -27,7 +27,7 @@ func TestTarget(t *testing.T) {
 			if repo, err = GetLocalRepo(); err != nil {
 				g.FailNow()
 			}
-			if targets, err = repo.GlobTargets("**/template.yml"); err != nil {
+			if targets, err = repo.GlobTargets("**/template.yaml"); err != nil {
 				g.FailNow()
 			}
 			var name string
@@ -38,7 +38,7 @@ func TestTarget(t *testing.T) {
 
 		g.It("works", func() {
 			// Sanity check
-			Expect(target.Name).To(Equal("testdata/fixtures/templates/template.yml"))
+			Expect(target.Name).To(Equal("testdata/fixtures/templates/template.yaml"))
 			Expect(target.Vars).To(BeNil())
 		})
 

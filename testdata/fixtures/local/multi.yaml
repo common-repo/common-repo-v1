@@ -1,0 +1,13 @@
+include:
+- testdata/fixtures/local/multi.yaml
+
+rename:
+- "testdata/fixtures/local/multi.yaml": "testdata/out/multi.yaml"
+
+upstream:
+  - url: .
+    rename:
+      - "fixtures/.commonrepo.yaml": ".commonrepo.yaml"
+  - url: .
+    rename:
+      - "fixtures/local/single.yaml": ".commonrepo.yaml"

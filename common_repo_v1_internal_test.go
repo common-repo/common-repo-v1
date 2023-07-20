@@ -26,14 +26,14 @@ func TestCommonRepoInternal(t *testing.T) {
 
 	g.Describe("commonrepo", func() {
 		g.It("clones a single source", func() {
-			cr, err := NewFrom("testdata/fixtures/single_source.yml", ".")
+			cr, err := NewFrom("testdata/fixtures/single_source.yaml", ".")
 			Expect(err).ToNot(HaveOccurred())
 			Expect(cr).ToNot(BeNil())
 		})
 
 		g.It("works as a stringer", func() {
-			cr, _ := NewFrom("testdata/fixtures/single_source.yml", ".")
-			Expect(cr.String()).To(HavePrefix("./testdata/fixtures/single_source.yml@"))
+			cr, _ := NewFrom("testdata/fixtures/single_source.yaml", ".")
+			Expect(cr.String()).To(HavePrefix("./testdata/fixtures/single_source.yaml@"))
 		})
 
 		g.Describe("New", func() {
@@ -45,7 +45,7 @@ func TestCommonRepoInternal(t *testing.T) {
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				// TODO: Make these tests stable at some point
-				// Expect(cr.config.Include).To(ContainElement("testdata/fixtures/.commonrepo.yml"))
+				// Expect(cr.config.Include).To(ContainElement("testdata/fixtures/.commonrepo.yaml"))
 			})
 
 			g.It("works with a dot path", func() {
@@ -53,7 +53,7 @@ func TestCommonRepoInternal(t *testing.T) {
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				// TODO: Make these tests stable at some point
-				// Expect(cr.config.Include).To(ContainElement("testdata/fixtures/.commonrepo.yml"))
+				// Expect(cr.config.Include).To(ContainElement("testdata/fixtures/.commonrepo.yaml"))
 			})
 		})
 
@@ -64,21 +64,21 @@ func TestCommonRepoInternal(t *testing.T) {
 			})
 
 			g.It("finds configs in the subpath", func() {
-				cr, err := NewFrom("**/fixtures/.commonrepo.{yml,yaml}", ".")
+				cr, err := NewFrom("**/fixtures/.commonrepo..yaml,yaml}", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				Expect(cr.config.Include).To(ContainElement("**"))
 			})
 
 			g.It("works with different configs", func() {
-				cr, err := NewFrom("testdata/fixtures/multi_source.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/multi_source.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				Expect(cr.config.Upstream).To(HaveLen(2))
 			})
 
 			g.It("works with different configs 2", func() {
-				cr, err := NewFrom("testdata/fixtures/single_source.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/single_source.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				Expect(cr.config.Upstream).To(HaveLen(1))
@@ -94,13 +94,13 @@ func TestCommonRepoInternal(t *testing.T) {
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				// TODO: Make these tests stable at some point
-				// Expect(cr.config.Include).To(Equal([]string{"testdata/fixtures/.commonrepo.yml"}))
+				// Expect(cr.config.Include).To(Equal([]string{"testdata/fixtures/.commonrepo.yaml"}))
 			})
 		})
 
 		g.Describe("LoadUpstreams", func() {
 			g.It("errors if the recursion goes too deep", func() {
-				cr, err := NewFrom("testdata/fixtures/single_source.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/single_source.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				err = cr.LoadUpstreams(0)
@@ -108,7 +108,7 @@ func TestCommonRepoInternal(t *testing.T) {
 			})
 
 			g.It("works with deep local nonsense", func() {
-				cr, err := NewFrom("**/fixtures/local/deep.yml", ".")
+				cr, err := NewFrom("**/fixtures/local/deep.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				err = cr.LoadUpstreams(4)
@@ -118,7 +118,7 @@ func TestCommonRepoInternal(t *testing.T) {
 
 		g.Describe("FlattenUpstreams", func() {
 			g.It("works with a single repo", func() {
-				cr, err := NewFrom("testdata/fixtures/local/single.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/local/single.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				err = cr.LoadUpstreams(4)
@@ -126,13 +126,13 @@ func TestCommonRepoInternal(t *testing.T) {
 				upstreams := cr.FlattenUpstreams()
 				Expect(len(upstreams)).To(Equal(2))
 				Expect(upstreams[1].config.Include).To(
-					Equal([]string{"testdata/fixtures/local/single.yml"}))
+					Equal([]string{"testdata/fixtures/local/single.yaml"}))
 				Expect(upstreams[0].config.Include).To(
 					Equal([]string{"**.commonrepo.y*ml"}))
 			})
 
 			g.It("works with multi repo", func() {
-				cr, err := NewFrom("testdata/fixtures/local/multi.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/local/multi.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				err = cr.LoadUpstreams(4)
@@ -141,21 +141,21 @@ func TestCommonRepoInternal(t *testing.T) {
 				Expect(len(upstreams)).To(Equal(4))
 				// Multi config
 				Expect(upstreams[3].config.Include).To(
-					Equal([]string{"testdata/fixtures/local/multi.yml"}))
+					Equal([]string{"testdata/fixtures/local/multi.yaml"}))
 				// - Inherits Single
 				Expect(upstreams[2].config.Include).To(
-					Equal([]string{"testdata/fixtures/local/single.yml"}))
+					Equal([]string{"testdata/fixtures/local/single.yaml"}))
 				//     - Single inherits Empty
 				Expect(upstreams[1].config.Include).To(
 					Equal([]string{"**.commonrepo.y*ml"}))
 				// - Inherits Fixtures
 				// TODO: Make these tests stable at some point
 				// Expect(upstreams[0].config.Include).To(
-				// Equal([]string{"testdata/fixtures/.commonrepo.yml"}))
+				// Equal([]string{"testdata/fixtures/.commonrepo.yaml"}))
 			})
 
 			g.It("works with deep repo", func() {
-				cr, err := NewFrom("testdata/fixtures/local/deep.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/local/deep.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				err = cr.LoadUpstreams(4)
@@ -164,24 +164,24 @@ func TestCommonRepoInternal(t *testing.T) {
 				Expect(len(upstreams)).To(Equal(5))
 				// Deep config
 				Expect(upstreams[4].config.Include).To(
-					Equal([]string{"testdata/fixtures/local/deep.yml"}))
+					Equal([]string{"testdata/fixtures/local/deep.yaml"}))
 				// - Inherits Multi
 				Expect(upstreams[3].config.Include).To(
-					Equal([]string{"testdata/fixtures/local/multi.yml"}))
+					Equal([]string{"testdata/fixtures/local/multi.yaml"}))
 				//     - Multi inherits Single
 				Expect(upstreams[2].config.Include).To(
-					Equal([]string{"testdata/fixtures/local/single.yml"}))
+					Equal([]string{"testdata/fixtures/local/single.yaml"}))
 				//         - Single inherits Empty
 				Expect(upstreams[1].config.Include).To(
 					Equal([]string{"**.commonrepo.y*ml"}))
 				//     - Multi inherits Fixtures
 				// TODO: Make this test stable at some point
 				// Expect(upstreams[0].config.Include).To(
-				// Equal([]string{"testdata/fixtures/.commonrepo.yml"}))
+				// Equal([]string{"testdata/fixtures/.commonrepo.yaml"}))
 			})
 
 			g.It("appends includes, excludes and renames", func() {
-				cr, err := NewFrom("testdata/fixtures/local/append.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/local/append.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				err = cr.LoadUpstreams(4)
@@ -193,7 +193,7 @@ func TestCommonRepoInternal(t *testing.T) {
 				Expect(append.config.Include).To(Equal([]string{}))
 				Expect(append.config.Exclude).To(Equal([]string{}))
 				Expect(append.config.Rename).To(Equal([]config.Rename{}))
-				// - Inherits local repo, renames .commonrepo.yml out of the way
+				// - Inherits local repo, renames .commonrepo.yaml out of the way
 				// to make it empty, but it gets the appended config
 				empty := upstreams[0]
 				Expect(empty.config.Include).To(Equal([]string{"*.md"}))
@@ -204,7 +204,7 @@ func TestCommonRepoInternal(t *testing.T) {
 
 		g.Describe("Init", func() {
 			g.It("works", func() {
-				cr, err := NewFrom("testdata/fixtures/local/single.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/local/single.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				err = cr.Init()
@@ -214,7 +214,7 @@ func TestCommonRepoInternal(t *testing.T) {
 
 		g.Describe("Composite", func() {
 			g.It("works", func() {
-				cr, err := NewFrom("testdata/fixtures/local/single.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/local/single.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				err = cr.Init()
@@ -223,13 +223,13 @@ func TestCommonRepoInternal(t *testing.T) {
 				Expect(composite).ToNot(BeNil())
 				keys := Keys(composite)
 				Expect(keys).To(Equal([]string{
-					"testdata/out/.not_commonrepo.yml",
-					"testdata/out/empty.yml",
-					"testdata/out/single.yml"}))
+					"testdata/out/.not_commonrepo.yaml",
+					"testdata/out/empty.yaml",
+					"testdata/out/single.yaml"}))
 			})
 
 			g.It("combines all template vars", func() {
-				cr, err := NewFrom("testdata/fixtures/templating.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/templating.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				err = cr.Init()
@@ -237,8 +237,8 @@ func TestCommonRepoInternal(t *testing.T) {
 				composite := cr.Composite()
 				Expect(composite).ToNot(BeNil())
 				keys := Keys(composite)
-				Expect(keys).To(Equal([]string{"templated.yml"}))
-				target := composite["templated.yml"]
+				Expect(keys).To(Equal([]string{"templated.yaml"}))
+				target := composite["templated.yaml"]
 				var buf = new(bytes.Buffer)
 				err = target.Write(buf)
 				Expect(err).ToNot(HaveOccurred())
@@ -249,7 +249,7 @@ func TestCommonRepoInternal(t *testing.T) {
 
 		g.Describe("WriteFS", func() {
 			g.It("works", func() {
-				cr, err := NewFrom("testdata/fixtures/local/single.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/local/single.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				err = cr.Init()
@@ -262,14 +262,14 @@ func TestCommonRepoInternal(t *testing.T) {
 				found, err := files.List(fs)
 				Expect(err).ToNot(HaveOccurred())
 				Expect(found).To(Equal([]string{
-					"testdata/out/.not_commonrepo.yml",
-					"testdata/out/empty.yml",
-					"testdata/out/single.yml",
+					"testdata/out/.not_commonrepo.yaml",
+					"testdata/out/empty.yaml",
+					"testdata/out/single.yaml",
 				}))
 			})
 
 			g.It("works with the actual filesystem", func() {
-				cr, err := NewFrom("testdata/fixtures/local/single.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/local/single.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				err = cr.Init()
@@ -283,9 +283,9 @@ func TestCommonRepoInternal(t *testing.T) {
 				found, err := files.List(fs)
 				Expect(err).ToNot(HaveOccurred())
 				Expect(found).To(Equal([]string{
-					"testdata/out/.not_commonrepo.yml",
-					"testdata/out/empty.yml",
-					"testdata/out/single.yml",
+					"testdata/out/.not_commonrepo.yaml",
+					"testdata/out/empty.yaml",
+					"testdata/out/single.yaml",
 				}))
 			})
 		})
@@ -304,7 +304,7 @@ func TestCommonRepoInternal(t *testing.T) {
 			})
 
 			g.It("works", func() {
-				cr, err := NewFrom("testdata/fixtures/local/write.yml", ".")
+				cr, err := NewFrom("testdata/fixtures/local/write.yaml", ".")
 				Expect(err).ToNot(HaveOccurred())
 				Expect(cr).ToNot(BeNil())
 				err = cr.Init()
@@ -315,7 +315,7 @@ func TestCommonRepoInternal(t *testing.T) {
 				err = composite.Write()
 				Expect(err).ToNot(HaveOccurred())
 				fs := osfs.New(outPath)
-				Expect(files.List(fs)).To(Equal([]string{"write.yml"}))
+				Expect(files.List(fs)).To(Equal([]string{"write.yaml"}))
 			})
 		})
 
@@ -323,7 +323,7 @@ func TestCommonRepoInternal(t *testing.T) {
 			g.SkipIf(os.Getenv("SKIP_EXTERNAL") != "")
 			g.Describe("LoadUpstreams", func() {
 				g.It("works with a single source", func() {
-					cr, err := NewFrom("testdata/fixtures/single_source.yml", ".")
+					cr, err := NewFrom("testdata/fixtures/single_source.yaml", ".")
 					Expect(err).ToNot(HaveOccurred())
 					Expect(cr).ToNot(BeNil())
 					err = cr.LoadUpstreams(3)
@@ -333,7 +333,7 @@ func TestCommonRepoInternal(t *testing.T) {
 				})
 
 				g.It("works with multiple sources", func() {
-					cr, err := NewFrom("testdata/fixtures/multi_source.yml", ".")
+					cr, err := NewFrom("testdata/fixtures/multi_source.yaml", ".")
 					Expect(err).ToNot(HaveOccurred())
 					Expect(cr).ToNot(BeNil())
 					err = cr.LoadUpstreams(3)
@@ -343,11 +343,11 @@ func TestCommonRepoInternal(t *testing.T) {
 					Expect(cr.upstreams[1].repo.URL).To(Equal("https://github.com/common-repo/common-repo-v1"))
 					Expect(cr.upstreams[1].repo.Ref).To(Equal("wip"))
 					Expect(cr.upstreams[1].config.Include).To(
-						Equal([]string{"testdata/fixtures/.commonrepo.yml"}))
+						Equal([]string{"testdata/fixtures/.commonrepo.yaml"}))
 				})
 
 				g.It("works with deep sources and renames", func() {
-					cr, err := NewFrom("testdata/fixtures/deep_source.yml", ".")
+					cr, err := NewFrom("testdata/fixtures/deep_source.yaml", ".")
 					Expect(err).ToNot(HaveOccurred())
 					Expect(cr).ToNot(BeNil())
 					err = cr.LoadUpstreams(3)
