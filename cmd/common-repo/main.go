@@ -55,6 +55,7 @@ func init() {
         Usage:
             %[1]s -h|--help
             %[1]s --version
+            %[1]s --debug
             %[1]s
 
         Options:
@@ -99,7 +100,7 @@ func GetArgs(usage string, argv []string) (args *Args, err error) {
 // Run actually executes the CLI once the args have been parsed and logs set and
 // all the other things that need to happen.
 func Run(args *Args) (err error) {
-	golog.Debug("loading common repo")
+	golog.Debug("common-repo starting")
 	err = DefaultRun()
 	return
 }
