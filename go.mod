@@ -12,7 +12,7 @@ require (
 	github.com/gobwas/glob v0.2.3
 	github.com/goccy/go-yaml v1.9.4
 	github.com/imdario/mergo v0.3.12
-	github.com/jinzhu/copier v0.3.0
+	github.com/jinzhu/copier v0.3.5
 	github.com/kataras/golog v0.1.7
 	github.com/onsi/gomega v1.11.0
 	github.com/pkg/errors v0.9.1
