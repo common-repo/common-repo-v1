@@ -1,0 +1,5 @@
+include:
+- testdata/fixtures/local/write.yaml
+
+rename:
+- "testdata/fixtures/local/write.yaml": "testdata/out/write.yaml"
